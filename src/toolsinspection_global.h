@@ -1,0 +1,14 @@
+#ifndef TOOLSINSPECTION_GLOBAL_H
+#define TOOLSINSPECTION_GLOBAL_H
+
+#ifdef WIN32
+#if defined(TOOLSINSPECTION_LIBRARY)
+#	define TOOLSINSPECTIONLIBSHARED_EXPORT __declspec(dllexport)
+#else
+#	define TOOLSINSPECTIONLIBSHARED_EXPORT __declspec(dllimport)
+#endif
+#else
+#	define TOOLSINSPECTIONLIBSHARED_EXPORT
+#endif
+
+#endif // TOOLSINSPECTION_GLOBAL_H
