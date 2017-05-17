@@ -1,18 +1,18 @@
-#ifndef TOOLSINSPECTION_H
-#define TOOLSINSPECTION_H
+#ifndef INSPECTIONMANAGE_H
+#define INSPECTIONMANAGE_H
 
-#include "toolsinspection_global.h"
 #include <vector>
 #include "opencv2/core/core.hpp"
 
 using namespace cv;
-class InspectionManage;
+class ChessMarker;
 
-class TOOLSINSPECTIONLIBSHARED_EXPORT ToolsInspection
+class InspectionManage
 {
 public:
-	ToolsInspection();
-	~ToolsInspection();
+    InspectionManage();
+    ~InspectionManage();
+
     bool setTmplImageAndMarker(cv::Mat tmplImage,
                                std::vector<cv::Rect> markerList = std::vector<cv::Rect>());
 
@@ -20,9 +20,7 @@ public:
                    cv::Rect toolRect, Rect &resRect);
 
 private:
-    InspectionManage * _pManage;
-
+    ChessMarker * _pChessMaker;
 };
 
-#endif //TOOLSINSPECTION_H
-
+#endif // INSPECTIONMANAGE_H

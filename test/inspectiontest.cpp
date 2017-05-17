@@ -1,5 +1,5 @@
 #include "toolsinspection.h"
-
+#include "opencv2/core/core.hpp"
 using namespace cv;
 int main(int argc, char *argv[])
 {
@@ -8,7 +8,8 @@ int main(int argc, char *argv[])
     Mat tmplImage;
     Mat toolImage;
     Rect toolRect;
-    inspect.inspection(inspectImage,tmplImage,toolImage,toolRect);
+    Rect resRect;
+    inspect.inspection(inspectImage,tmplImage,toolRect,resRect);
     return 0;
 }
 
