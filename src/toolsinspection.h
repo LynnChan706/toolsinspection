@@ -8,16 +8,28 @@
 using namespace cv;
 class InspectionManage;
 
+enum TOOL_RES
+{
+    TOOL_EXIST_ = 1,
+    TOOL_NOT_EXIS_ = 2,
+    TOOL_UNKNOWN_ = 3,
+    ERR_NO_TEMPLATE_ = 4,
+    ERR_INSPECT_IMG_ = 5
+};
+
 class TOOLSINSPECTIONLIBSHARED_EXPORT ToolsInspection
 {
 public:
 	ToolsInspection();
 	~ToolsInspection();
-    bool setTmplImageAndMarker(cv::Mat tmplImage,
-                               std::vector<cv::Rect> markerList = std::vector<cv::Rect>());
+    void setDebugInfo(bool debugState);
 
-    int inspection(cv::Mat inspectImage, cv::Mat toolImage,
-                   cv::Rect toolRect, Rect &resRect);
+    bool setTmplImageAndMarker(Mat tmplImage,
+                               std::vector<Rect> markerList = std::vector<Rect>());
+
+    bool setCurrentInspectImage(Mat inspectImage);
+
+    int inspection(Rect toolRect, std::vector<Point2f> &resRect,float &resScore, Mat toolImage=Mat());
 
 private:
     InspectionManage * _pManage;

@@ -8,7 +8,6 @@
 #include "toolsinspection.h"
 #include "inspectionmanage.h"
 
-
 ToolsInspection::ToolsInspection()
 {
     _pManage = new InspectionManage();
@@ -22,34 +21,26 @@ ToolsInspection::~ToolsInspection()
         _pManage = NULL;
     }
 }
-
-
-/*************************************************
-Description:    //Set templates and marker areas
-Input:          //tmplImage: template image(toolbox picture without tools)
-                //markerList: some marker areas(3*3 Chessboard image in every areas)
-                //If the number of maker areas is 0, \
-                // we will use SIFT features to locate tools
-Return:         //Set templates result
-*************************************************/
+void ToolsInspection::setDebugInfo(bool debugState)
+{
+    _pManage->setDebugInfo(debugState);
+}
 
 bool ToolsInspection::setTmplImageAndMarker(Mat tmplImage, std::vector<Rect> markerList)
 {
     return _pManage->setTmplImageAndMarker(tmplImage,markerList);
 }
 
-/*************************************************
-Description:    //inspection tools exists
-Input:          //inspectImage: inspectImage image(toolbox picture)
-                //toolImage:Need to inspection tools pictue
-                //toolRect:tool position in the template image
-Output:         //resRect:tool position in the inspectImage
-Return:         //Inspection result
-*************************************************/
 
-int ToolsInspection::inspection(Mat inspectImage, Mat toolImage,Rect toolRect,Rect & resRect)
+bool ToolsInspection::setCurrentInspectImage(Mat inspectImage)
 {
-    return _pManage->inspection(inspectImage,toolImage,toolRect,resRect);
+    return _pManage->setCurrentInspectImage(inspectImage);
+}
+
+
+int ToolsInspection::inspection(Rect toolRect, std::vector<Point2f> &resRect, float &resScore, Mat toolImage)
+{
+    return _pManage->inspection( toolRect, resRect,resScore, toolImage);
 
 }
 

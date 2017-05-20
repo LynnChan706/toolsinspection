@@ -11,7 +11,13 @@ class ChessMarker
 public:
 
     ChessMarker();
-    int getMakerPointList(const Mat makerImage, Size &makerSize);
+
+    bool getTransform(const Mat tempImg, const Mat inspectImg,
+                         std::vector<Rect> markerList,
+                      Mat &warpMat);
+
+    bool getMakerPointList(const Mat makerImage, Size makerSize,
+                           Point2f & pos);
 
 };
 
