@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "opencv2/core/core.hpp"
-#include "matcher.h"
+#include "matcher.hpp"
 
 using namespace cv;
 class ChessMarker;
