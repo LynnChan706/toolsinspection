@@ -25,6 +25,7 @@ Change to your working directory:
 
     C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\amd64>cd C:\Path\to
     C:\Path\to>
+    
 Where C:\Path\to is path to your real working directory.
 
 CMake Configuration
@@ -43,27 +44,19 @@ The Makefile generator can build the project in only one configuration, so you n
 To start using a Release configuration:
 
     C:\Path\to\project\cmake\build>mkdir release & cd release
-    C:\Path\to\project\cmake\build\release>cmake -G "NMake Makefiles" ^
- -DCMAKE_BUILD_TYPE=Release ^
- -DCMAKE_INSTALL_PREFIX=../../../../install ^
- ../..
+    C:\Path\to\project\cmake\build\release>cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release ../../
 It will generate nmake Makefile in current directory.
 
 To use Debug configuration:
 
     C:\Path\to\project\cmake\build>mkdir debug & cd debug
-    C:\Path\to\project\cmake\build\debug>cmake -G "NMake Makefiles" ^
-    -DCMAKE_BUILD_TYPE=Debug ^
-    -DCMAKE_INSTALL_PREFIX=../../../../install ^
-    ../..
+    C:\Path\to\project\cmake\build\debug>cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Debug ../../
 It will generate nmake Makefile in current directory.
 
 To create Visual Studio solution file:
 
-    C:\Path\to\project\cmake\build>mkdir solution & cd solution
-    C:\Path\to\project\cmake\build\solution>cmake -G "Visual Studio 12 2013 Win64" ^
-    -DCMAKE_INSTALL_PREFIX=../../../../install ^
-    ../..
+    C:\Path\to\project\cmake\build\solution>cmake -G "Visual Studio 12 2013 Win64" -DCMAKE_BUILD_TYPE=Release ../../
+
 It will generate Visual Studio solution file project.sln in current directory.
 
 Compiling
