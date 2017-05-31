@@ -30,6 +30,13 @@ int main(int argc, char *argv[])
     }
     tmplImage = cv::imread("tmp.jpg");
     toolImage = cv::imread("tmpltool.jpg");
+
+
+//    cv::cvtColor(tmplImage,tmplImage,cv::COLOR_BGR2GRAY);
+//    cv::cvtColor(toolImage,toolImage,cv::COLOR_BGR2GRAY);
+//    cv::cvtColor(inspectImage,inspectImage,cv::COLOR_BGR2GRAY);
+    DEBUG_OUT<<" tmplImage channels "<<tmplImage.channels()<< std::endl;
+    DEBUG_OUT<<" toolImage channels "<<toolImage.channels()<< std::endl;
     int w=inspectImage.size().width;
     int h=inspectImage.size().height;
 
@@ -48,6 +55,7 @@ int main(int argc, char *argv[])
     inspect.setTmplImageAndMarker(tmplImage,markerList);
 
     inspect.setCurrentInspectImage(inspectImage);
+
     resState = inspect.inspection(toolRect,resRect,resScore);
     if(resState<ERR_NO_TEMPLATE_)
     {

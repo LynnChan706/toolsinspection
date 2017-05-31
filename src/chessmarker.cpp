@@ -53,7 +53,7 @@ bool ChessMarker::getTransform(const Mat tempImg, const Mat inspectImg,
         }
         catch(...)
         {
-            DEBUG_STATE_OUT<<"Get chess marker error! May be the ROI area error!"<<std::endl;
+            DEBUG_STATE_OUT<<" Get chess marker error! May be the ROI area error!"<<std::endl;
             return false;
         }
     }

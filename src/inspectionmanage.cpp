@@ -39,6 +39,10 @@ bool InspectionManage::setTmplImageAndMarker(Mat tmplImage,
     else
     {
         tmplImage.copyTo(_tmplImage);
+        if(_tmplImage.channels()==1)
+        {
+            cv::cvtColor(_tmplImage,_tmplImage,cv::COLOR_GRAY2BGR);
+        }
         _markerList = markerList;
         return true;
     }
@@ -60,6 +64,10 @@ bool InspectionManage::setCurrentInspectImage(Mat inspectImage)
     {
         DEBUG_STATE_OUT<<" template or inspect image empty!"<<std::endl;
         return false;
+    }
+    if(_inspectImage.channels()==1)
+    {
+        cv::cvtColor(_inspectImage,_inspectImage,cv::COLOR_GRAY2BGR);
     }
     bool locState = false;
     if (_markerList.size()!= 0 )
@@ -166,7 +174,13 @@ int InspectionManage::inspection(Rect toolRect, std::vector<Point2f> &resRect, f
 
         if(!toolImage.empty())
         {
-            toolsRes= _pCheckState->getToolState(tmpltoolImg,toolImage);
+            cv::Mat toolbutimg(toolImage);
+            if(toolbutimg.channels()==1)
+            {
+                cv::cvtColor(toolbutimg,toolbutimg,cv::COLOR_GRAY2BGR);
+            }
+
+            toolsRes= _pCheckState->getToolState(tmpltoolImg,toolbutimg);
             if(resScore>toolsRes)
             {
                 return TOOL_INEXIST;
