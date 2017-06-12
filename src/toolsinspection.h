@@ -24,6 +24,8 @@ public:
 	~ToolsInspection();
     void setDebugInfo(bool debugState);
 
+    void setCheckStateParam(float thresholdValue);
+
     bool setTmplImageAndMarker(Mat tmplImage,
                                std::vector<Rect> markerList = std::vector<Rect>());
 

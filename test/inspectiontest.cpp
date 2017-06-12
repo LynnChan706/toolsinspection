@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
     Mat inspectImage;
     Mat tmplImage;
     Mat toolImage;
+    DEBUG_OUT<<" statr inspect!"<<std::endl;
     if(argc==2)
     {
         String str=argv[1];
@@ -49,7 +50,8 @@ int main(int argc, char *argv[])
     markerList.push_back(Rect(w/2,h/2,w/2,h/2));
     float resScore;
     int resState;
-//    inspect.setDebugInfo(false);
+    //inspect.setDebugInfo(false);
+    inspect.setCheckStateParam(15);
     std::vector<Point2f> resRect;
 
     inspect.setTmplImageAndMarker(tmplImage,markerList);

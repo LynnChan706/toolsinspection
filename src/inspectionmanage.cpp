@@ -12,6 +12,7 @@ InspectionManage::InspectionManage()
 {
     _pChessMaker = new ChessMarker();
     _pCheckState = new CheckToolState();
+    _stateThreshold = 15;
 
 }
 
@@ -53,6 +54,11 @@ void InspectionManage::setDebugInfo(bool debugState)
     DebugState::_bDebugState = debugState;
 }
 
+void InspectionManage::setCheckStateParam(float thresholdValue)
+{
+    _stateThreshold=thresholdValue;
+}
+
 bool InspectionManage::setCurrentInspectImage(Mat inspectImage)
 {
     inspectImage.copyTo(_inspectImage);
@@ -70,7 +76,21 @@ bool InspectionManage::setCurrentInspectImage(Mat inspectImage)
         cv::cvtColor(_inspectImage,_inspectImage,cv::COLOR_GRAY2BGR);
     }
     bool locState = false;
-    if (_markerList.size()!= 0 )
+
+    DEBUG_STATE_OUT<<" SIFT Location! "<<std::endl;
+    Matcher rmatcher;
+    rmatcher.setConfidenceLevel(0.99);
+    rmatcher.setMinDistanceToEpipolar(1.0);
+    rmatcher.setRatio(3.95f);
+    cv::Ptr<cv::FeatureDetector> pfd = new SurfFeatureDetector(6000);
+    rmatcher.setFeatureDetector(pfd);
+    // Match the two images
+    std::vector<cv::DMatch> matches;
+    std::vector<cv::KeyPoint> keypoints1, keypoints2;
+    rmatcher.match(_tmplImage,_inspectImage,matches, keypoints1, keypoints2);
+    locState =getHomography(matches,keypoints1,keypoints2);
+
+    if (!locState && _markerList.size()!= 0 )
     {
         locState = _pChessMaker->getTransform(
                     _tmplImage,_inspectImage,
@@ -84,22 +104,7 @@ bool InspectionManage::setCurrentInspectImage(Mat inspectImage)
             DEBUG_STATE_OUT<<" Chessmarker Location error!"<<std::endl;
         }
     }
-    if(locState == false)
-    {
-        DEBUG_STATE_OUT<<" SIFT Location! "<<std::endl;
-        Matcher rmatcher;
-        rmatcher.setConfidenceLevel(0.99);
-        rmatcher.setMinDistanceToEpipolar(1.0);
-        rmatcher.setRatio(3.95f);
-        cv::Ptr<cv::FeatureDetector> pfd = new SurfFeatureDetector(6000);
-        rmatcher.setFeatureDetector(pfd);
-        // Match the two images
-        std::vector<cv::DMatch> matches;
-        std::vector<cv::KeyPoint> keypoints1, keypoints2;
 
-        rmatcher.match(_tmplImage,_inspectImage,matches, keypoints1, keypoints2);
-        locState =getHomography(matches,keypoints1,keypoints2);
-    }
     if(locState && (!_warpMat.empty()) )
     {
         std::vector<Point2f> obj_corners(4);
@@ -192,7 +197,7 @@ int InspectionManage::inspection(Rect toolRect, std::vector<Point2f> &resRect, f
         }
         else
         {
-            if(resScore>DIFF_TMPL_VALUE)
+            if(resScore>_stateThreshold)
             {
                 return TOOL_INEXIST;
             }
@@ -201,6 +206,11 @@ int InspectionManage::inspection(Rect toolRect, std::vector<Point2f> &resRect, f
                 return TOOL_EXIST;
             }
         }
+    }
+    else
+    {
+        DEBUG_STATE_OUT<<"ToolRect Error!"<<std::endl;
+        return ERR_INSPECT_IMG;
     }
 }
 

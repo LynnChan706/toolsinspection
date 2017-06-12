@@ -20,6 +20,8 @@ public:
 
     void setDebugInfo(bool debugState);
 
+    void setCheckStateParam(float thresholdValue);
+
     bool setCurrentInspectImage(cv::Mat inspectImage);
 
     int inspection(Rect toolRect, std::vector<Point2f> & resRect, float &resScore, Mat toolImage);
@@ -36,6 +38,7 @@ private:
     Mat _inspectImage;
     Mat _loctImage;
     Mat  _warpMat;
+    float _stateThreshold;
     std::vector<cv::Rect> _markerList;
     ChessMarker * _pChessMaker;
     CheckToolState * _pCheckState;

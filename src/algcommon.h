@@ -56,7 +56,7 @@ struct DebugState
     static bool _bDebugState;
 };
 
-#define IMG_SHOW_TIME 2000
+#define IMG_SHOW_TIME 500
 #define MIN_FEATURE_NUM 30
 #define DEBUG_STATE if(DebugState::_bDebugState)
 #define DEBUG_STATE_OUT DEBUG_STATE DEBUG_OUT

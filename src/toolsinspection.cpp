@@ -26,6 +26,11 @@ void ToolsInspection::setDebugInfo(bool debugState)
     _pManage->setDebugInfo(debugState);
 }
 
+void ToolsInspection::setCheckStateParam(float thresholdValue)
+{
+    _pManage->setCheckStateParam(thresholdValue);
+}
+
 bool ToolsInspection::setTmplImageAndMarker(Mat tmplImage, std::vector<Rect> markerList)
 {
     return _pManage->setTmplImageAndMarker(tmplImage,markerList);

@@ -10,7 +10,7 @@ SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 if(MSVC)
-	add_definitions(/MP)
+        add_definitions(/MD)
 endif(MSVC)
 
 add_subdirectory(src)
