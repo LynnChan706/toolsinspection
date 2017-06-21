@@ -27,11 +27,10 @@ int main(int argc, char *argv[])
     }
     else
     {
-        inspectImage = cv::imread("test2.jpg");
+        inspectImage = cv::imread("2017-06-19_19_03_34_927.bmp");
     }
-    tmplImage = cv::imread("tmp.jpg");
+    tmplImage = cv::imread("tmp.bmp");
     toolImage = cv::imread("tmpltool.jpg");
-
 
 //    cv::cvtColor(tmplImage,tmplImage,cv::COLOR_BGR2GRAY);
 //    cv::cvtColor(toolImage,toolImage,cv::COLOR_BGR2GRAY);
@@ -40,8 +39,10 @@ int main(int argc, char *argv[])
     DEBUG_OUT<<" toolImage channels "<<toolImage.channels()<< std::endl;
     int w=inspectImage.size().width;
     int h=inspectImage.size().height;
-
-    Rect toolRect(563,291,1075-563,777-291);
+    //602, 294, 341, 379
+    //709,709,701,265
+    Rect toolRect(709,709,701,265);
+//    Rect toolRect(563,291,1075-563,777-291);
 
     std::vector<Rect> markerList;
     markerList.push_back(Rect(0,0,w/2,h/2));

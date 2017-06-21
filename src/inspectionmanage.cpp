@@ -12,7 +12,7 @@ InspectionManage::InspectionManage()
 {
     _pChessMaker = new ChessMarker();
     _pCheckState = new CheckToolState();
-    _stateThreshold = 15;
+    _stateThreshold = 14;
 
 }
 
@@ -82,12 +82,14 @@ bool InspectionManage::setCurrentInspectImage(Mat inspectImage)
     rmatcher.setConfidenceLevel(0.99);
     rmatcher.setMinDistanceToEpipolar(1.0);
     rmatcher.setRatio(3.95f);
-    cv::Ptr<cv::FeatureDetector> pfd = new SurfFeatureDetector(6000);
+    cv::Ptr<cv::FeatureDetector> pfd = new SurfFeatureDetector(2000);
     rmatcher.setFeatureDetector(pfd);
     // Match the two images
     std::vector<cv::DMatch> matches;
     std::vector<cv::KeyPoint> keypoints1, keypoints2;
-    rmatcher.match(_tmplImage,_inspectImage,matches, keypoints1, keypoints2);
+    Mat processimg;
+    _pCheckState->adaptiveBrightness(_tmplImage,_inspectImage,processimg);
+    rmatcher.match(_tmplImage,processimg,matches, keypoints1, keypoints2);
     locState =getHomography(matches,keypoints1,keypoints2);
 
     if (!locState && _markerList.size()!= 0 )
@@ -186,7 +188,7 @@ int InspectionManage::inspection(Rect toolRect, std::vector<Point2f> &resRect, f
             }
 
             toolsRes= _pCheckState->getToolState(tmpltoolImg,toolbutimg);
-            if(resScore>toolsRes)
+            if(resScore<toolsRes)
             {
                 return TOOL_INEXIST;
             }
@@ -197,7 +199,7 @@ int InspectionManage::inspection(Rect toolRect, std::vector<Point2f> &resRect, f
         }
         else
         {
-            if(resScore>_stateThreshold)
+            if(resScore<_stateThreshold)
             {
                 return TOOL_INEXIST;
             }

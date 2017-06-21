@@ -58,6 +58,8 @@ struct DebugState
 
 #define IMG_SHOW_TIME 500
 #define MIN_FEATURE_NUM 30
+#define FEATURE_VALUE 700
+
 #define DEBUG_STATE if(DebugState::_bDebugState)
 #define DEBUG_STATE_OUT DEBUG_STATE DEBUG_OUT
 
