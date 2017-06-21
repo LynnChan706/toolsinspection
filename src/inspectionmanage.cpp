@@ -89,8 +89,12 @@ bool InspectionManage::setCurrentInspectImage(Mat inspectImage)
     std::vector<cv::KeyPoint> keypoints1, keypoints2;
     Mat processimg;
     _pCheckState->adaptiveBrightness(_tmplImage,_inspectImage,processimg);
-    rmatcher.match(_tmplImage,processimg,matches, keypoints1, keypoints2);
-    locState =getHomography(matches,keypoints1,keypoints2);
+    bool checkres=false;
+    rmatcher.match(_tmplImage,processimg,matches, keypoints1, keypoints2,checkres);
+    if(checkres)
+    {
+        locState =getHomography(matches,keypoints1,keypoints2);
+    }
 
     if (!locState && _markerList.size()!= 0 )
     {

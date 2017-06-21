@@ -148,7 +148,6 @@ public:
         {
             points1.clear();
             points2.clear();
-
             for (std::vector<cv::DMatch>::const_iterator it= outMatches.begin();
                  it!= outMatches.end(); ++it) {
                 float x= keypoints1[it->queryIdx].pt.x;
@@ -162,18 +161,26 @@ public:
                         cv::Mat(points1),cv::Mat(points2),
                         CV_FM_8POINT);
         }
+
         return fundemental;
     }
 
     cv::Mat match(cv::Mat& image1, cv::Mat& image2, // input images
                   std::vector<cv::DMatch>& matches, // output matches and keypoints
-                  std::vector<cv::KeyPoint>& keypoints1, std::vector<cv::KeyPoint>& keypoints2) {
+                  std::vector<cv::KeyPoint>& keypoints1, std::vector<cv::KeyPoint>& keypoints2,bool &checkres)
+    {
 
         detector->detect(image1,keypoints1);
         detector->detect(image2,keypoints2);
 
         DEBUG_STATE_OUT << " Number of SURF points (1): "  << keypoints1.size() << std::endl;
         DEBUG_STATE_OUT << " Number of SURF points (2): "  << keypoints2.size() << std::endl;
+
+        if(keypoints1.size()<100||keypoints2.size()<100)
+        {
+            checkres=false;
+            return cv::Mat();
+        }
 
         cv::Mat descriptors1, descriptors2;
         extractor->compute(image1,keypoints1,descriptors1);
@@ -193,14 +200,36 @@ public:
                          2);
         DEBUG_STATE_OUT << " Number of matched points 1->2: "  << matches1.size() << std::endl;
         DEBUG_STATE_OUT << " Number of matched points 2->1: "  << matches2.size() << std::endl;
+
+        if(matches1.size()<60||matches2.size()<60)
+        {
+            checkres=false;
+            return cv::Mat();
+        }
+
         int removed= ratioTest(matches1);
         DEBUG_STATE_OUT << " Number of matched points 1->2 (ratio test) : "  << matches1.size()-removed << std::endl;
+
+
         removed= ratioTest(matches2);
         DEBUG_STATE_OUT << " Number of matched points 1->2 (ratio test) : "  << matches2.size()-removed << std::endl;
+        if(matches1.size()<30||matches2.size()<30)
+        {
+            checkres=false;
+            return cv::Mat();
+        }
+
         std::vector<cv::DMatch> symMatches;
         symmetryTest(matches1,matches2,symMatches);
+        if(matches1.size()<20||matches2.size()<20)
+        {
+            checkres=false;
+            return cv::Mat();
+        }
+
         DEBUG_STATE_OUT << " Number of matched points (symmetry test): "  << symMatches.size() << std::endl;
         cv::Mat fundemental= ransacTest(symMatches, keypoints1, keypoints2, matches);
+        checkres=true;
 
         return fundemental;
     }

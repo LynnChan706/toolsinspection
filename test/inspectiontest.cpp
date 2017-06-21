@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        inspectImage = cv::imread("2017-06-19_19_03_34_927.bmp");
+        inspectImage = cv::imread("2017-06-19_18_59_19_343.bmp");
     }
     tmplImage = cv::imread("tmp.bmp");
     toolImage = cv::imread("tmpltool.jpg");
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     int h=inspectImage.size().height;
     //602, 294, 341, 379
     //709,709,701,265
-    Rect toolRect(709,709,701,265);
+    Rect toolRect(602, 294, 341, 379);
 //    Rect toolRect(563,291,1075-563,777-291);
 
     std::vector<Rect> markerList;
