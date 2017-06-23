@@ -8,7 +8,7 @@ endif()
 include_directories(SYSTEM ${OpenCV_INCLUDE_DIRS})
 list(APPEND _LINKER_LIBS ${OpenCV_LIBS})
 
- message("opencv list:" ${_LINKER_LIBS})
+message("opencv list:" ${_LINKER_LIBS})
 message(STATUS "OpenCV found (${OpenCV_CONFIG_PATH})")
 add_definitions(-DUSE_OPENCV)
 

@@ -5,11 +5,16 @@
 #include <vector>
 #include <iostream>
 
+#define MSVC_TIME
+
+#ifdef MSVC_TIME
+#include <windows.h>
+#endif
+
 #define DEBUG_OUT  std::cout<<"[TEST OUT]: "<<__FUNCTION__<<" "<< __LINE__
 
 int main(int argc, char *argv[])
 {
-
     ToolsInspection inspect;
     Mat inspectImage;
     Mat tmplImage;
@@ -27,22 +32,24 @@ int main(int argc, char *argv[])
     }
     else
     {
-        inspectImage = cv::imread("2017-06-19_18_59_19_343.bmp");
+        DEBUG_OUT<<" Image error!"<<std::endl;
+        inspectImage = cv::imread("2017-06-19_19_01_48_127.bmp");
     }
     tmplImage = cv::imread("tmp.bmp");
     toolImage = cv::imread("tmpltool.jpg");
 
-//    cv::cvtColor(tmplImage,tmplImage,cv::COLOR_BGR2GRAY);
-//    cv::cvtColor(toolImage,toolImage,cv::COLOR_BGR2GRAY);
-//    cv::cvtColor(inspectImage,inspectImage,cv::COLOR_BGR2GRAY);
+    //cv::cvtColor(tmplImage,tmplImage,cv::COLOR_BGR2GRAY);
+    //cv::cvtColor(toolImage,toolImage,cv::COLOR_BGR2GRAY);
+    //cv::cvtColor(inspectImage,inspectImage,cv::COLOR_BGR2GRAY);
     DEBUG_OUT<<" tmplImage channels "<<tmplImage.channels()<< std::endl;
     DEBUG_OUT<<" toolImage channels "<<toolImage.channels()<< std::endl;
     int w=inspectImage.size().width;
     int h=inspectImage.size().height;
+    DEBUG_OUT<<" tmplImage channels "<<tmplImage.size().width<< std::endl;
     //602, 294, 341, 379
     //709,709,701,265
     Rect toolRect(602, 294, 341, 379);
-//    Rect toolRect(563,291,1075-563,777-291);
+    //Rect toolRect(563,291,1075-563,777-291);
 
     std::vector<Rect> markerList;
     markerList.push_back(Rect(0,0,w/2,h/2));
@@ -51,15 +58,21 @@ int main(int argc, char *argv[])
     markerList.push_back(Rect(w/2,h/2,w/2,h/2));
     float resScore;
     int resState;
-    //inspect.setDebugInfo(false);
+    inspect.setDebugInfo(false);
     inspect.setCheckStateParam(15);
     std::vector<Point2f> resRect;
-
+#ifdef MSVC_TIME
+    double start = GetTickCount();
+#endif
     inspect.setTmplImageAndMarker(tmplImage,markerList);
-
     inspect.setCurrentInspectImage(inspectImage);
-
     resState = inspect.inspection(toolRect,resRect,resScore);
+#ifdef MSVC_TIME
+    double end=GetTickCount();
+    double cost;
+    cost=end-start;
+    DEBUG_OUT<<" time cost release: "<<cost<<" ms"<<std::endl;
+#endif
     if(resState<ERR_NO_TEMPLATE_)
     {
         DEBUG_OUT<<" point 1:"<<resRect[0].x<<" "<<resRect[0].y<<std::endl;
